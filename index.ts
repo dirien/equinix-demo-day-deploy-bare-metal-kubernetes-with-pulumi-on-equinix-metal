@@ -71,7 +71,8 @@ const capem = new k8s.yaml.ConfigFile("capem", {
     ],
 });
 
-for (let i = 0; i < 2; i++) {
+
+for (let i = 0; i < 0; i++) {
     const equinixCluster = new EquinixCluster("equinixCluster" + i, {
         name: "equinix-cluster-" + i,
         sshKey: config.get("sshKey") || "",
@@ -89,3 +90,4 @@ for (let i = 0; i < 2; i++) {
         ],
     });
 }
+
