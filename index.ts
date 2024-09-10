@@ -21,7 +21,7 @@ const k8sProvider = new k8s.Provider("k8s", {
 })
 
 const capi = new k8s.yaml.ConfigFile("capi", {
-    file: "./capi.yaml",
+    file: "./manifests/capi.yaml",
 }, {dependsOn: certManager, ignoreChanges: ["*"], provider: k8sProvider});
 
 
@@ -61,7 +61,7 @@ const originalSecret = new k8s.core.v1.Secret("api-credentials", {
 );
 
 const capem = new k8s.yaml.ConfigFile("capem", {
-    file: "./capem.yaml",
+    file: "./manifests/capem.yaml",
 }, {
     dependsOn: [
         certManager,
@@ -71,23 +71,21 @@ const capem = new k8s.yaml.ConfigFile("capem", {
     ],
 });
 
-
-/*
-const equinixCluster = new EquinixCluster("equinixCluster", {
-    name: "equinix-cluster",
-    sshKey: config.get("sshKey") || "",
-    projectID: config.require("projectID"),
-    metro: "FR",
-    os: "ubuntu_20_04",
-    machineType: "m3.small.x86",
-    namespace: "default",
-    kubernetesVersion: "v1.31.0"
-}, {
-    dependsOn: [
-        certManager,
-        capi,
-        capem,
-    ],
-});
-*/
-
+for (let i = 0; i < 2; i++) {
+    const equinixCluster = new EquinixCluster("equinixCluster" + i, {
+        name: "equinix-cluster-" + i,
+        sshKey: config.get("sshKey") || "",
+        projectID: config.require("projectID"),
+        metro: "FR",
+        os: "ubuntu_20_04",
+        machineType: "m3.small.x86",
+        namespace: "default",
+        kubernetesVersion: "v1.31.0"
+    }, {
+        dependsOn: [
+            certManager,
+            capi,
+            capem,
+        ],
+    });
+}

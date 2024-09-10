@@ -283,7 +283,7 @@ export class EquinixCluster extends pulumi.ComponentResource {
         }, {parent: this});
 
 // Define the PacketCluster CustomResource
-        const packetCluster = new k8s.apiextensions.CustomResource("demo-day", {
+        const packetCluster = new k8s.apiextensions.CustomResource(args.name, {
             apiVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
             kind: "PacketCluster",
             metadata: {
